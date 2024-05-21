@@ -17,6 +17,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 //=====================================get all users=============================================
+        // get all users : api/users
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
@@ -25,7 +26,7 @@ namespace API.Controllers
             return Ok(users);
         }
 //==============================get user by id====================================================
-
+        // get user by id: api/users/3006
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {

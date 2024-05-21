@@ -13,6 +13,7 @@ namespace API.Controllers
             _bookService = bookService;
         }
 //=====================================get all books=============================================
+        // Get all Book: api/books
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks()
@@ -21,6 +22,7 @@ namespace API.Controllers
             return Ok(books);
         }
 //==============================get book by id====================================================
+        // Get Book by id: api/books/2
         [HttpGet("{id}")]
         public async Task<ActionResult<BookDTO>> GetBook(int id)
         {

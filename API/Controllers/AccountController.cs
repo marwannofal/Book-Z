@@ -22,6 +22,8 @@ namespace API.Controllers
             _context = context;
             _logger = logger;
         }
+//===========================Register==============================================================
+        // POST: api/account/register
         [HttpPost("register")] // POST: api/account/register
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
@@ -55,8 +57,9 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user)
             };
         }
-
-        [HttpPost("login")]// POST: api/account/login
+//===========================Login==============================================================
+        // POST: api/account/login
+        [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto) 
         {
             var user = await _context.User.SingleOrDefaultAsync(
