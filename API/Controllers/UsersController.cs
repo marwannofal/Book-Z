@@ -64,15 +64,15 @@ namespace API.Controllers
             }
             return NoContent();
         }
-//===============================Get User With Books============================================
+//===============================Get User With Books and Ratings============================================
         // Get User With Books: api/users/5/withbooks
-        [HttpGet("{userId}/withBooks")]
-        public async Task<ActionResult<UserDto>> GetUserWithBooksAsync(int userId)
+        [HttpGet("{userId}/withall")]
+        public async Task<ActionResult<UserDto>> GetUserWithBooksAndRatingAsync(int userId)
         {
             try
             {
-                var user = await _userService.GetUserWithBooksAsync(userId);
-                return Ok(user);
+                var userDto = await _userService.GetUserWithBooksAndRatingAsync(userId);
+                return Ok(userDto);
             }
             catch (Exception ex)
             {
@@ -93,6 +93,34 @@ namespace API.Controllers
                 var book = _mapper.Map<Book>(bookDto);
                 var bookId = await _userService.AddBookToUserAsync(userId, book);
                 return CreatedAtRoute("GetBook", new { id = bookId }, bookDto);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+//=====================================Add Rating To User===========================================
+        //Add Rating To User: api/users/5/ratings
+        [HttpPost("{userId}/ratings")]
+        public async Task<ActionResult> AddRatingToUserAsync(int userId, [FromBody] RatingDto ratingDto)
+        {
+            if (ratingDto == null)
+            {
+                return BadRequest("Rating data is missing or invalid.");
+            }
+
+            try
+            {
+                var ratingId = await _userService.AddRatingToUserAsync(userId, ratingDto);
+                return CreatedAtRoute("GetRating", new { id = ratingId }, ratingDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {

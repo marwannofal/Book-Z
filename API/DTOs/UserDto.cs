@@ -7,6 +7,7 @@ namespace API.DTOs
         public string PhoneNumber { get; set; }
         public string Token { get; set; }
         public List<BookDTO> Books { get; set; }
+        public List<RatingDto> Ratings { get; set; }
 
     }
 }

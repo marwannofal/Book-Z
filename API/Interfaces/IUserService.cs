@@ -10,6 +10,7 @@ namespace API.Interfaces
         Task<bool> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
         Task<bool> DeleteUserAsync(int id);
         Task<int> AddBookToUserAsync(int userId,  Book book);
-        Task<User> GetUserWithBooksAsync(int userId);
+        Task<UserDto> GetUserWithBooksAndRatingAsync(int userId);
+        Task<int> AddRatingToUserAsync(int userId,  RatingDto ratingDto);
     }
 }

@@ -3,6 +3,7 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 namespace API.Services
 {
@@ -71,25 +72,52 @@ namespace API.Services
             return _context.User.Any(e => e.Id == id);
         }
 
-         public async Task<int> AddBookToUserAsync(int userId, Book book) 
+        public async Task<int> AddBookToUserAsync(int userId, Book book)
         {
-            // Retrieve the user from the database
-            var user = await _context.User.FindAsync(userId);
+            if (book == null) throw new ArgumentNullException(nameof(book));
 
-            // Add the book to the user's collection
+            var user = await _context.User.Include(u => u.Books)
+                                        .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new ArgumentException($"User with ID {userId} not found.");
+            }
+
+            if (user.Books == null)
+            {
+                user.Books = new List<Book>();
+            }
+
             user.Books.Add(book);
-
-            // Save changes to the database
             await _context.SaveChangesAsync();
 
-            // Return the ID of the added book
             return book.Id;
         }
 
-        public async Task<User> GetUserWithBooksAsync(int userId)
+        public async Task<UserDto> GetUserWithBooksAndRatingAsync(int userId)
         {
-            return await _context.User.Include(u => u.Books).FirstOrDefaultAsync(u => u.Id == userId);
+            
+            var user = await _context.User
+                .Include(u => u.Books)
+                .Include(u => u.Ratings)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+            
+            if (user == null) throw new KeyNotFoundException("User not found");
+
+            return _mapper.Map<UserDto>(user);
         }
         
+        public async Task<int> AddRatingToUserAsync(int userId, RatingDto ratingDto)
+        {
+            var user = await _context.User.Include(u => u.Ratings).FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) throw new KeyNotFoundException("User not found");
+
+            var rating = _mapper.Map<Rating>(ratingDto);
+            user.Ratings.Add(rating);
+
+            await _context.SaveChangesAsync();
+            return rating.Id;
+        }
     }
 }

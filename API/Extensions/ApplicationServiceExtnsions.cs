@@ -16,10 +16,11 @@ namespace API.Extensions
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Book-Z;Integrated Security=True");
             });
             services.AddCors();
+            services.AddAutoMapper(typeof(Program).Assembly);
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
-            services.AddAutoMapper(typeof(Program).Assembly);
+            services.AddScoped<IRatingService, RatingService>();
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new ConditionConverter());

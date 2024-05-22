@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 //==============================get book by id====================================================
         // Get Book by id: api/books/2
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetBook")]
         public async Task<ActionResult<BookDTO>> GetBook(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
@@ -64,7 +64,7 @@ namespace API.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddBook([FromBody] BookDTO bookDto)
         {
-             try
+            try
             {
                 if (!ModelState.IsValid)
                 {
