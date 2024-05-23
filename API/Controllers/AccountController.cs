@@ -24,7 +24,7 @@ namespace API.Controllers
         }
 //===========================Register==============================================================
         // POST: https://localhost:5051/api/account/register
-        [HttpPost("register")] // POST: api/account/register
+        [HttpPost("register")] 
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (registerDto.Password == null || registerDto.Email == null || registerDto.PhoneNumber == null)
@@ -60,27 +60,45 @@ namespace API.Controllers
 //===========================Login==============================================================
         // POST: https://localhost:5051/api/account/login
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto) 
+        public async Task<ActionResult<UserDto>> Login(UserDto userDto) 
         {
-            var user = await _context.User.SingleOrDefaultAsync(
-                x => x.UserName == loginDto.Username);
+            var user = await _context.User
+                .Include(u => u.Books)
+                .Include(u => u.Ratings)
+                .SingleOrDefaultAsync(
+                x => x.UserName == userDto.Username);
     
             if (user == null) return Unauthorized("invalid Username");
         
             using var hmac = new HMACSHA512(user.PasswordSalt);
 
-            var ComputedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+            var ComputedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password));
 
             for (int i = 0; i < ComputedHash.Length; i++) 
             {
                 if (ComputedHash[i] != user.PasswordHash[i] ) return Unauthorized("invalid Password");
             }
-        
+
+            var books = user.Books.Select(b => new BookDTO
+            {
+                Title = b.Title,
+            }).ToList();
+
+            var ratings = user.Ratings.Select(r => new RatingDto
+            {
+                RatingValue = r.RatingValue
+            }).ToList();
+
+            double averageRating = user.Ratings?.Average(r => r.RatingValue) ?? 0.0;
+
             return new UserDto
             {
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                Image = user.Image,
+                Books = books,
+                AverageRating = averageRating,
                 Token = _tokenService.CreateToken(user)
             }; 
         }
