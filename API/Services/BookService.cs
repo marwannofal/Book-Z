@@ -21,15 +21,15 @@ namespace API.Services
 
         }
 //=====================================================================
-        public async Task<IEnumerable<BookDTO>> GetAllBooksAsync()
+        public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
             var books = await _context.Books.ToListAsync();
-            return _mapper.Map<IEnumerable<BookDTO>>(books);
+            return _mapper.Map<IEnumerable<Book>>(books);
         }
-        public async Task<BookDTO> GetBookByIdAsync(int id)
+        public async Task<Book> GetBookByIdAsync(int id)
         {
             var book = await _context.Books.FindAsync(id);
-            return _mapper.Map<BookDTO>(book);
+            return _mapper.Map<Book>(book);
         }
 
 //=====================================================================

@@ -1,4 +1,5 @@
 using API.DTOs;
+using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace API.Controllers
         // Get all Book: https://localhost:5051/api/books
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
             var books = await _bookService.GetAllBooksAsync();
             return Ok(books);
@@ -24,7 +25,7 @@ namespace API.Controllers
 //==============================get book by id====================================================
         // Get Book by id: https://localhost:5051/api/books/2
         [HttpGet("{id}", Name = "GetBook")]
-        public async Task<ActionResult<BookDTO>> GetBook(int id)
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
             if (book == null)

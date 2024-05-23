@@ -1,5 +1,4 @@
 using Google.Cloud.Storage.V1;
-using API.Interfaces;
 
 public class ImageService 
 {
