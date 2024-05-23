@@ -1,7 +1,4 @@
 using API.Extensions;
-using API.Interfaces;
-using API.Services;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,13 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServiceExtensions(builder.Configuration);
 
-// Add logging
-builder.Services.AddLogging();
 
 var app = builder.Build();
 
 app.UseRouting();
+
+app.UseCors("AllowReactApp");
+
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

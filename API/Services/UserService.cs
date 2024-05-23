@@ -11,10 +11,14 @@ namespace API.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public UserService(ApplicationDbContext context, IMapper mapper)
+        private readonly ImageService _imageService;
+
+        public UserService(ApplicationDbContext context, IMapper mapper,
+            ImageService imageService)
         {
             _context = context;
             _mapper = mapper;
+            _imageService = imageService;
         }
         public async Task<IEnumerable<UserDto>> GetUsersAsync()
         {
@@ -27,7 +31,7 @@ namespace API.Services
             var user = await _context.User.FindAsync(id);
             return _mapper.Map<UserDto>(user);
         }
-        public async Task<bool> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
+        public async Task<bool> UpdateUserAsync(int id, UserDto UserDto)
         {
             var user = await _context.User.FindAsync(id);
             if (user == null)
@@ -35,7 +39,7 @@ namespace API.Services
                 return false;
             }
 
-            _mapper.Map(updateUserDto, user);
+            _mapper.Map(UserDto, user);
             _context.Entry(user).State = EntityState.Modified;
             try
             {

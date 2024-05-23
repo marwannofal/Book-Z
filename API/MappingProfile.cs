@@ -7,7 +7,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<User, UserDto>(); // Map User entity to UserDto
-        CreateMap<UpdateUserDto, User>(); // Map UserUpdateDto to User entity
+        CreateMap<UserDto, User>(); // Map UserDto to User entity
 
         CreateMap<Book, BookDTO>(); // Map Book entity to BookDto
         CreateMap<BookDTO, Book>(); // Map BookDto to Book entity

@@ -12,6 +12,5 @@ namespace API.DTOs
         public string Email { get; set;}
         [Phone]
         public string PhoneNumber { get; set;}
-
     }
 }

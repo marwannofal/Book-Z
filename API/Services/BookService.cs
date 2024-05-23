@@ -9,13 +9,16 @@ namespace API.Services
 {
     public class BookService : IBookService
     {
+        private readonly ImageService _imageService;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public BookService(ApplicationDbContext context, IMapper mapper)
+        public BookService(ApplicationDbContext context, IMapper mapper, ImageService imageService)
         {
             _context = context;
             _mapper = mapper;
+            _imageService = imageService;
+
         }
 //=====================================================================
         public async Task<IEnumerable<BookDTO>> GetAllBooksAsync()
@@ -36,11 +39,19 @@ namespace API.Services
             {
                 throw new ArgumentNullException(nameof(bookDto));
             }
+
+            string image = null;
+            if (bookDto.Image != null)
+            {
+                image = await _imageService.UploadImageAsync(bookDto.Image);
+            }
+
             var book = new Book
             {
                 Title = bookDto.Title,
                 Condition = bookDto.Condition,
-                Description = bookDto.Description
+                Description = bookDto.Description,
+                Image = image
             };
 
             await _context.Books.AddAsync(book);

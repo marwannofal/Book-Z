@@ -1,7 +1,11 @@
 using API.Data;
 using API.Interfaces;
 using API.Services;
+using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Extensions
 {
@@ -16,14 +20,28 @@ namespace API.Extensions
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Book-Z;Integrated Security=True");
             });
             services.AddCors();
+            services.AddLogging();
             services.AddAutoMapper(typeof(Program).Assembly);
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<ImageService>();
+            // Register Google Cloud Storage client
+            services.AddSingleton(StorageClient.Create());
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new ConditionConverter());
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000") 
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
             });
             return services;
         }

@@ -7,7 +7,7 @@ namespace API.Interfaces
     {
         Task<IEnumerable<UserDto>> GetUsersAsync();
         Task<UserDto> GetUserByIdAsync(int id);
-        Task<bool> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
+        Task<bool> UpdateUserAsync(int id, UserDto updateUserDto);
         Task<bool> DeleteUserAsync(int id);
         Task<int> AddBookToUserAsync(int userId,  Book book);
         Task<UserDto> GetUserWithBooksAndRatingAsync(int userId);

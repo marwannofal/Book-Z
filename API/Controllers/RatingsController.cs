@@ -25,7 +25,7 @@ namespace API.Controllers
             return Ok(ratings);
         }
 //==============================get Rating by id====================================================
-        // get Rating by id: api/ratings/3006
+        // get Rating by id: https://localhost:5051/api/ratings/3006
         [HttpGet("{id}", Name = "GetRating")]
         public async Task<ActionResult<RatingDto>> GetRating(int id)
         {
@@ -36,9 +36,9 @@ namespace API.Controllers
             }
             return Ok(rating);
         }
-//=======================================Add Book===================================================
-        //Add: api/ratings/add
-        [HttpPost("add")]
+//=======================================create rating===================================================
+        //Add: https://localhost:5051/api/ratings/add
+        [HttpPost("create")]
         public async Task<IActionResult> AddRating([FromBody] RatingDto ratingDto)
         {
             try
