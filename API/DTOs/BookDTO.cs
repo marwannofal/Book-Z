@@ -11,6 +11,3 @@ namespace API.DTOs
         public IFormFile Image { get; set; }
     }
 }
-
-
-//my name is marwan 
