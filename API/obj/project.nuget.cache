@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1AbpGwWxKhwsRODrbg0rUCXfOhWZDd48cdco80tXzu/JWDQ0GLQcsHRHz5VOVfOQz3nfBvYLUcgGrJep184RmQ==",
+  "dgSpecHash": "4rgXucw23PgMS0knj89V+kaBKX6pQjF4hBumBqEmjhb4xOCLmgRrIhIgG3Ip+TnPaHjVyFT1vg18bbEngTC5Pg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\marwa\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\marwa\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

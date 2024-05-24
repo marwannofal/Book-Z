@@ -82,12 +82,11 @@ namespace API.Controllers
 
             var books = user.Books.Select(b => new BookDTO
             {
+                Id = b.Id,
                 Title = b.Title,
-            }).ToList();
-
-            var ratings = user.Ratings.Select(r => new RatingDto
-            {
-                RatingValue = r.RatingValue
+                Condition = b.Condition,
+                Description = b.Description,
+                ImageUrl = b.Image
             }).ToList();
 
             double averageRating = user.Ratings.Any() ? user.Ratings.Average(r => r.RatingValue) : 0.0;

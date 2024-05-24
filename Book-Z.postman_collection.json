@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "3fb38370-76c7-44e7-9a4a-c3df530c4ae0",
+		"name": "Book-Z",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34645583"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\":\"marwanoo\",\r\n    \"Password\": \"123456789\",\r\n    \"Email\":\"marwan@gmail.com\",\r\n    \"PhoneNumber\":\"0798300000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/account/register",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"account",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\":\"marwanoo\",\r\n    \"Password\": \"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/account/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"account",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create rating",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RatingValue\":4.3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/ratings/create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"ratings",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Ratings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/ratings",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Rating by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/ratings/2010",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"ratings",
+						"2010"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Title",
+							"value": "marwan11book",
+							"type": "text"
+						},
+						{
+							"key": "Condition",
+							"value": "Like_New",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "marwan book Condition",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"type": "file",
+							"src": "/C:/Users/marwa/OneDrive/Pictures/Nitro/Nitro_Wallpaper_05_3840x2400.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/books/create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"books",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/books",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get book by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/books/11019",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"books",
+						"11019"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete book",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/books/delete/2010",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"books",
+						"delete",
+						"2010"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Uodate Book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "updated book ",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "uodated Description ",
+							"type": "text"
+						},
+						{
+							"key": "Condition",
+							"value": "Used",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"type": "file",
+							"src": "postman-cloud:///1ef18ca1-8062-4110-9cbe-b59261775950"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/books/update/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"books",
+						"update",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Users By id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/users/7011",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"7011"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Users with all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/users/withall/7011",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"withall",
+						"7011"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete Users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5050/api/users/delete/3005",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"delete",
+						"3005"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update users",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"UpdatedUsername\",\r\n  \"email\": \"updatedemail@example.com\",\r\n  \"phoneNumber\": \"123-456-7890\",\r\n  \"password\": \"updatedpassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/users/update/3006",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"update",
+						"3006"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user add book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "book numbe 101",
+							"type": "text"
+						},
+						{
+							"key": "Condition",
+							"value": "New",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "this is book 101",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "postman-cloud:///1ef18ca1-8062-4110-9cbe-b59261775950"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/users/books/7011",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"books",
+						"7011"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user add rating",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RatingValue\" : 4.3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/users/ratings/7011",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"ratings",
+						"7011"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload User photo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "postman-cloud:///1ef18ca1-8062-4110-9cbe-b59261775950"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:5050/api/users/uploaduserphoto/7011",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"uploaduserphoto",
+						"7011"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\API\\API.csproj": {}
+    "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\API\\API.csproj": {
+    "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\API\\API.csproj",
+        "projectPath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj",
         "packagesPath": "C:\\Users\\marwa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\API\\obj\\",
+        "outputPath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\marwa\\AppData\\Roaming\\NuGet\\NuGet.Config"
