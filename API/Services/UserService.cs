@@ -3,7 +3,6 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 namespace API.Services
 {
@@ -31,7 +30,7 @@ namespace API.Services
             var user = await _context.User.FindAsync(id);
             return _mapper.Map<UserDto>(user);
         }
-        public async Task<bool> UpdateUserAsync(int id, UserDto UserDto)
+        public async Task<bool> UpdateUserAsync(int id, UserDto userDto)
         {
             var user = await _context.User.FindAsync(id);
             if (user == null)
@@ -39,34 +38,47 @@ namespace API.Services
                 return false;
             }
 
-            _mapper.Map(UserDto, user);
-            _context.Entry(user).State = EntityState.Modified;
+            _mapper.Map(userDto, user);
+
             try
             {
+                _context.User.Update(user);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!UserExists(id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                throw;
             }
+
             return true;
         }
         public async Task<bool> DeleteUserAsync(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.User
+                .Include(u => u.Books)
+                .Include(u => u.Ratings)
+                .FirstOrDefaultAsync(u => u.Id == id);
+                
             if (user == null)
             {
                 return false;
             }
 
+            if (user.Books != null && user.Books.Any())
+            {
+                _context.Books.RemoveRange(user.Books);
+            }
+            
+            if (user.Ratings != null && user.Ratings.Any())
+            {
+                _context.Ratings.RemoveRange(user.Ratings);
+            }
+
+            // Remove the user
             _context.User.Remove(user);
+            
             await _context.SaveChangesAsync();
             return true;
         }
@@ -114,8 +126,12 @@ namespace API.Services
         
         public async Task<int> AddRatingToUserAsync(int userId, RatingDto ratingDto)
         {
-            var user = await _context.User.Include(u => u.Ratings).FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null) throw new KeyNotFoundException("User not found");
+            var user = await _context.User.Include(u => u.Ratings)
+                                        .FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found");
+            }
 
             var rating = _mapper.Map<Rating>(ratingDto);
             user.Ratings.Add(rating);
@@ -123,5 +139,33 @@ namespace API.Services
             await _context.SaveChangesAsync();
             return rating.Id;
         }
+        public async Task<bool> UpdateUserImageAsync(int id, string imageUrl)
+        {
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.Image = imageUrl;
+            _context.Entry(user).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return true;
+        }
+
     }
 }

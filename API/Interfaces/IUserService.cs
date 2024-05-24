@@ -12,5 +12,6 @@ namespace API.Interfaces
         Task<int> AddBookToUserAsync(int userId,  Book book);
         Task<UserDto> GetUserWithBooksAndRatingAsync(int userId);
         Task<int> AddRatingToUserAsync(int userId,  RatingDto ratingDto);
+        Task<bool> UpdateUserImageAsync(int id, string imageUrl);
     }
 }

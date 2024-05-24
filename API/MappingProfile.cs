@@ -6,11 +6,17 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<User, UserDto>(); // Map User entity to UserDto
-        CreateMap<UserDto, User>(); // Map UserDto to User entity
+        CreateMap<User, UserDto>();
+        CreateMap<UserDto, User>().ForMember(dest => dest.Id, opt => opt.Ignore()); 
 
-        CreateMap<Book, BookDTO>(); // Map Book entity to BookDto
-        CreateMap<BookDTO, Book>(); // Map BookDto to Book entity
+        // Mapping from BookDTO to Book
+        CreateMap<BookDTO, Book>()
+            .ForMember(dest => dest.Image, opt => opt.Ignore()); // Ignore the Image property
+
+        // Mapping from Book to BookDTO
+        CreateMap<Book, BookDTO>()
+            .ForMember(dest => dest.Image, opt => opt.Ignore()) // Ignore the Image property
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Image)); // Map Image URL
 
         CreateMap<RatingDto, Rating>(); // Map RatingDto to Rating entity
         CreateMap<Rating, RatingDto>(); // Map Rating entity to RatingDto

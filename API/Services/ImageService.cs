@@ -1,26 +1,33 @@
-using Google.Cloud.Storage.V1;
-
 public class ImageService 
 {
-    private readonly StorageClient _storageClient;
-    private readonly string _bucketName;
+    private readonly IWebHostEnvironment _env;
 
-    public ImageService(IConfiguration configuration)
+    public ImageService(IWebHostEnvironment env)
     {
-        var keyFilePath = configuration["GoogleCloudStorage:KeyFilePath"];
-        var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile(keyFilePath);
-        _storageClient = StorageClient.Create(credential);
-        _bucketName = configuration["GoogleCloudStorage:BucketName"];
+        _env = env;
     }
 
     public async Task<string> UploadImageAsync(IFormFile file)
     {
-        var objectName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-        using (var stream = file.OpenReadStream())
+        if (file == null || file.Length == 0)
         {
-            await _storageClient.UploadObjectAsync(_bucketName, objectName, file.ContentType, stream);
+            return null;
         }
 
-        return $"https://storage.googleapis.com/{_bucketName}/{objectName}";
+        var uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+        if (!Directory.Exists(uploadsFolder))
+        {
+            Directory.CreateDirectory(uploadsFolder);
+        }
+
+        var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(fileStream);
+        }
+
+        return $"/images/{uniqueFileName}";
     }
 }

@@ -12,82 +12,108 @@ namespace API.Services
         private readonly ImageService _imageService;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-
+//================================================================================================
         public BookService(ApplicationDbContext context, IMapper mapper, ImageService imageService)
         {
             _context = context;
             _mapper = mapper;
             _imageService = imageService;
-
         }
-//=====================================================================
+//================================================================================================
         public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
             var books = await _context.Books.ToListAsync();
-            return _mapper.Map<IEnumerable<Book>>(books);
+            return books;
         }
+//================================================================================================
         public async Task<Book> GetBookByIdAsync(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            return _mapper.Map<Book>(book);
+            return await _context.Books.FindAsync(id);
         }
-
-//=====================================================================
+//================================================================================================
         public async Task<int> AddBookAsync(BookDTO bookDto)
         {
-            if (bookDto == null)
-            {
-                throw new ArgumentNullException(nameof(bookDto));
-            }
-
-            string image = null;
+            string imageUrl = null;
             if (bookDto.Image != null)
             {
-                image = await _imageService.UploadImageAsync(bookDto.Image);
+                try
+                {
+                    Console.WriteLine("Uploading image...");
+                    imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
+                    Console.WriteLine($"Image uploaded: {imageUrl}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Image upload failed: {ex.Message}");
+                    throw;
+                }
             }
 
             var book = new Book
             {
+                Id = bookDto.Id,
                 Title = bookDto.Title,
                 Condition = bookDto.Condition,
                 Description = bookDto.Description,
-                Image = image
+                Image = imageUrl
             };
 
-            await _context.Books.AddAsync(book);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Books.Add(book);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("Book saved to database");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database save failed: {ex.Message}");
+                throw;
+            }
 
             return book.Id;
         }
-//=====================================================================
+//================================================================================================
         public async Task<bool> UpdateBookAsync(int id, BookDTO bookDto)
         {
             var book = await _context.Books.FindAsync(id);
             if (book == null)
             {
-                return false;
+                return false; // Or throw an exception if you prefer
             }
 
-            _mapper.Map(bookDto, book);
-            _context.Entry(book).State = EntityState.Modified;
-            try
+            // Do not modify the Id
+            book.Title = bookDto.Title;
+            book.Condition = bookDto.Condition;
+            book.Description = bookDto.Description;
+
+            if (bookDto.Image != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
+                try
                 {
-                    return false;
+                    var imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
+                    book.Image = imageUrl;
                 }
-                else
+                catch (Exception ex)
                 {
+                    Console.WriteLine($"Image upload failed: {ex.Message}");
                     throw;
                 }
             }
+
+            try
+            {
+                _context.Books.Update(book);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database update failed: {ex.Message}");
+                throw;
+            }
+
             return true;
         }
-//=====================================================================
+//================================================================================================
         public async Task<bool> DeleteBookAsync(int id)
         {
             var book = await _context.Books.FindAsync(id);
@@ -99,7 +125,7 @@ namespace API.Services
             await _context.SaveChangesAsync();
             return true;
         }
-//=====================================================================
+
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);

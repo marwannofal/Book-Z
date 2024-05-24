@@ -1,3 +1,4 @@
+using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
@@ -12,12 +13,15 @@ namespace API.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly ImageService _imageService;
+        private readonly ApplicationDbContext _context;
 
-        public UsersController(IUserService userService, IMapper mapper, ImageService imageService)
+        public UsersController(IUserService userService, IMapper mapper, ImageService imageService
+            ,ApplicationDbContext context )
         {
             _userService = userService;
             _mapper = mapper;
             _imageService = imageService;
+            _context = context;
         }
 //=====================================get all users=============================================
         // get all users : https://localhost:5051/api/users
@@ -43,17 +47,23 @@ namespace API.Controllers
 //=====================================update user=============================================
         // PUT: https://localhost:5051/api/users/update/5
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> PutUser(int id, UserDto userDto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
         {
-             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _userService.UpdateUserAsync(id, userDto);
-            if (!result)
-                return NotFound();
-            
-
-            return NoContent();
+            try
+            {
+                var result = await _userService.UpdateUserAsync(id, userDto);
+                if (!result)
+                {
+                    return NotFound(new { Message = "User not found." });
+                }
+                return Ok(new { Message = "User updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update user");
+            }
         }
 //=====================================Delete user=============================================
         // DELETE: https://localhost:5051/api/users/delete/5
@@ -63,13 +73,13 @@ namespace API.Controllers
             var result = await _userService.DeleteUserAsync(id);
             if (!result)
             {
-                return NotFound();
+                return NotFound(new { Message = "User not found." });
             }
-            return NoContent();
+            return Ok(new { Message = "User and related entities deleted successfully." });
         }
 //===============================Get User With Books and Ratings============================================
-        // Get User With Books: https://localhost:5051/api/users/5/withall
-        [HttpGet("{userId}/withall")]
+        // Get User With Books: https://localhost:5051/api/users/withall/5
+        [HttpGet("withall/{userId}")]
         public async Task<ActionResult<UserDto>> GetUserWithBooksAndRatingAsync(int userId)
         {
             try
@@ -83,9 +93,9 @@ namespace API.Controllers
             }
         }
 //=====================================Add Book To User===========================================
-        //Add Book To User: https://localhost:5051/api/users/5/books
-        [HttpPost("{userId}/books")]
-        public async Task<ActionResult> AddBookToUserAsync(int userId, [FromBody] BookDTO bookDto)
+        //Add Book To User: https://localhost:5051/api/users/books/5
+        [HttpPost("books/{userId}")]
+        public async Task<ActionResult> AddBookToUserAsync(int userId, [FromForm] BookDTO bookDto)
         {
             if (bookDto == null)
             {
@@ -94,8 +104,20 @@ namespace API.Controllers
             try
             {
                 var book = _mapper.Map<Book>(bookDto);
+
+                if (bookDto.Image != null)
+                {
+                    var imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
+                    book.Image = imageUrl;
+                }
+
                 var bookId = await _userService.AddBookToUserAsync(userId, book);
-                return CreatedAtRoute("GetBook", new { id = bookId }, bookDto);
+
+                var responseDto = _mapper.Map<BookDTO>(book);
+                responseDto.Id = bookId;
+                responseDto.ImageUrl = book.Image;
+
+                return CreatedAtRoute("GetBook", new { id = bookId }, responseDto);
             }
             catch (ArgumentException ex)
             {
@@ -107,8 +129,8 @@ namespace API.Controllers
             }
         }
 //=====================================Add Rating To User===========================================
-        //Add Rating To User: https://localhost:5051/api/users/5/ratings
-        [HttpPost("{userId}/ratings")]
+        //Add Rating To User: https://localhost:5051/api/users/ratings/5
+        [HttpPost("ratings/{userId}")]
         public async Task<ActionResult> AddRatingToUserAsync(int userId, [FromBody] RatingDto ratingDto)
         {
             if (ratingDto == null)
@@ -119,7 +141,12 @@ namespace API.Controllers
             try
             {
                 var ratingId = await _userService.AddRatingToUserAsync(userId, ratingDto);
-                return CreatedAtRoute("GetRating", new { id = ratingId }, ratingDto);
+
+                // Map the created rating back to RatingDto to include the generated ID
+                var createdRating = await _context.Ratings.FindAsync(ratingId);
+                var responseDto = _mapper.Map<RatingDto>(createdRating);
+
+                return CreatedAtRoute("GetRating", new { id = ratingId }, responseDto);
             }
             catch (KeyNotFoundException ex)
             {
@@ -135,8 +162,8 @@ namespace API.Controllers
             }
         }
 //=====================================Add image To User===========================================
-        //Add image To User: https://localhost:5051/api/users/5/uploaduserphoto
-        [HttpPost("{id}/uploaduserphoto")]
+        //Add image To User: https://localhost:5051/api/users/uploaduserphoto/5
+        [HttpPost("uploaduserphoto/{id}")]
         public async Task<IActionResult> UploadPhoto(int id, [FromForm] ImageUploadDto imageUploadDto)
         {
             if (imageUploadDto.Image == null || imageUploadDto.Image.Length == 0)
@@ -150,12 +177,17 @@ namespace API.Controllers
                 return NotFound("User not found.");
             }
 
-            var ImageUrl = await _imageService.UploadImageAsync(imageUploadDto.Image);
-            user.Image = ImageUrl;
-            await _userService.UpdateUserAsync(id, user);
+            var imageUrl = await _imageService.UploadImageAsync(imageUploadDto.Image);
+            user.Image = imageUrl;
 
+            var updateResult = await _userService.UpdateUserImageAsync(id, imageUrl);
+            if (!updateResult)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update user.");
+            }
 
-            return Ok(new { ImageUrl });
+            return Ok(new { ImageUrl = imageUrl });
         }
+
     } 
 }

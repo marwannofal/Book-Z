@@ -30,6 +30,7 @@ namespace API.Services
             }
             var rating = new Rating
             {
+                Id = ratingDto.Id,
                 RatingValue = ratingDto.RatingValue
             };
 

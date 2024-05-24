@@ -25,7 +25,7 @@ namespace API.Controllers
 //==============================get book by id====================================================
         // Get Book by id: https://localhost:5051/api/books/2
         [HttpGet("{id}", Name = "GetBook")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
             if (book == null)
@@ -37,16 +37,25 @@ namespace API.Controllers
 //=====================================update book=============================================
         // PUT: https://localhost:5051/api/books/update/5
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> PutBook(int id, BookDTO bookDto)
+        public async Task<IActionResult> UpdateBook(int id, [FromForm] BookDTO bookDto)
         {
-             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                var result = await _bookService.UpdateBookAsync(id, bookDto);
+                if (!result)
+                {
+                    return NotFound();
+                }
 
-            var result = await _bookService.UpdateBookAsync(id, bookDto);
-            if (!result)
-                return NotFound();
-            
-            return NoContent();
+                var updatedBook = await _bookService.GetBookByIdAsync(id);
+                return Ok(updatedBook);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update book");
+            }
         }
 //=====================================Delete book=============================================
         // DELETE: https://localhost:5051/api/books/delete/5
@@ -56,9 +65,9 @@ namespace API.Controllers
             var result = await _bookService.DeleteBookAsync(id);
             if (!result)
             {
-                return NotFound();
+                return NotFound(new { Message = "book not found." });
             }
-            return NoContent();
+            return Ok(new { Message = "book and related deleted successfully." });
         }
 //=======================================Create Book===================================================
         //Add: https://localhost:5051/api/books/create
@@ -73,15 +82,24 @@ namespace API.Controllers
                 }
 
                 var bookId = await _bookService.AddBookAsync(bookDto);
-                
-                return CreatedAtAction(nameof(GetBook), new { id = bookId }, bookDto);
+                var book = await _bookService.GetBookByIdAsync(bookId);
+
+                // Ensure the book is not null and contains the expected data
+                if (book == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to retrieve the added book");
+                }
+
+                return CreatedAtAction(nameof(GetBook), new { id = bookId }, book);
             }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to add book");
             }
         }

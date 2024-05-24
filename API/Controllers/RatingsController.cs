@@ -37,7 +37,7 @@ namespace API.Controllers
             return Ok(rating);
         }
 //=======================================create rating===================================================
-        //Add: https://localhost:5051/api/ratings/add
+        //Add: https://localhost:5051/api/ratings/create
         [HttpPost("create")]
         public async Task<IActionResult> AddRating([FromBody] RatingDto ratingDto)
         {

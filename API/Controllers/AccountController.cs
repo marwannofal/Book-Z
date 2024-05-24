@@ -53,6 +53,7 @@ namespace API.Controllers
 
             return new UserDto
             {
+                Id = user.Id,
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };
@@ -89,10 +90,11 @@ namespace API.Controllers
                 RatingValue = r.RatingValue
             }).ToList();
 
-            double averageRating = user.Ratings?.Average(r => r.RatingValue) ?? 0.0;
-
+            double averageRating = user.Ratings.Any() ? user.Ratings.Average(r => r.RatingValue) : 0.0;
+            
             return new UserDto
             {
+                Id = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
