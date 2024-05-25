@@ -55,6 +55,7 @@ namespace API.Services
                 Title = bookDto.Title,
                 Condition = bookDto.Condition,
                 Description = bookDto.Description,
+                Availability = bookDto.Availability,
                 Image = imageUrl
             };
 
@@ -78,13 +79,13 @@ namespace API.Services
             var book = await _context.Books.FindAsync(id);
             if (book == null)
             {
-                return false; // Or throw an exception if you prefer
+                return false; 
             }
 
-            // Do not modify the Id
             book.Title = bookDto.Title;
             book.Condition = bookDto.Condition;
             book.Description = bookDto.Description;
+            book.Availability = bookDto.Availability;
 
             if (bookDto.Image != null)
             {

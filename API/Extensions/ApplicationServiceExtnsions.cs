@@ -1,8 +1,9 @@
+using System.ComponentModel;
 using API.Data;
 using API.Interfaces;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
-
+using API.Entities.Enum;
 
 namespace API.Extensions
 {
@@ -26,7 +27,8 @@ namespace API.Extensions
             services.AddScoped<ImageService>();
             services.AddControllers().AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new ConditionConverter());
+                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Condition>());
+                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Availability>());
             });
             services.AddCors(options =>
             {

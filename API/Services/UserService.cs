@@ -21,6 +21,7 @@ namespace API.Services
             _mapper = mapper;
             _imageService = imageService;
         }
+//===========================================================================================
         public async Task<IEnumerable<UserDto>> GetUsersAsync()
         {
             var users = await _context.User.ToListAsync();
@@ -32,6 +33,7 @@ namespace API.Services
             var user = await _context.User.FindAsync(id);
             return _mapper.Map<UserDto>(user);
         }
+//===========================================================================================
         public async Task<bool> UpdateUserAsync(int id, UserDto userDto)
         {
             var user = await _context.User.FindAsync(id);
@@ -56,6 +58,7 @@ namespace API.Services
 
             return true;
         }
+//===========================================================================================
         public async Task<bool> DeleteUserAsync(int id)
         {
             var user = await _context.User
@@ -84,12 +87,12 @@ namespace API.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
+//===========================================================================================
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.Id == id);
         }
-
+//===========================================================================================
         public async Task<int> AddBookToUserAsync(int userId, Book book)
         {
             if (book == null) throw new ArgumentNullException(nameof(book));
@@ -112,7 +115,7 @@ namespace API.Services
 
             return book.Id;
         }
-
+//===========================================================================================
         public async Task<UserDto> GetUserWithBooksAndRatingAsync(int userId)
         {
             
@@ -125,7 +128,7 @@ namespace API.Services
 
             return _mapper.Map<UserDto>(user);
         }
-        
+//===========================================================================================
         public async Task<int> AddRatingToUserAsync(int userId, RatingDto ratingDto)
         {
             var user = await _context.User.Include(u => u.Ratings)
@@ -141,6 +144,7 @@ namespace API.Services
             await _context.SaveChangesAsync();
             return rating.Id;
         }
+//===========================================================================================
         public async Task<bool> UpdateUserImageAsync(int id, string imageUrl)
         {
             var user = await _context.User.FindAsync(id);
@@ -168,7 +172,7 @@ namespace API.Services
             }
             return true;
         }
-
+//===========================================================================================
         public async Task ResetPasswordAsync(string username, string newPassword)
         {
             var user = await _context.User.SingleOrDefaultAsync(u => u.UserName == username);

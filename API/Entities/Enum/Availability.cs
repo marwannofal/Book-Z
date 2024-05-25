@@ -4,11 +4,9 @@ using System.Text.Json.Serialization;
 namespace API.Entities.Enum
 {
     [JsonConverter(typeof(EnumConverter))]
-    public enum Condition
+    public enum Availability
     {
-        New ,
-        Like_New,
-        Used,
-        Damaged
+        Available ,
+        completed
     }
 }
