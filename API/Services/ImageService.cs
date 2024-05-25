@@ -1,4 +1,4 @@
-public class ImageService 
+public class ImageService
 {
     private readonly IWebHostEnvironment _env;
 

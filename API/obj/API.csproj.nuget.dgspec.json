@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj": {}
+    "E:\\Projects\\Done Projects\\bookExchangeNew\\Book-Z\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj": {
+    "E:\\Projects\\Done Projects\\bookExchangeNew\\Book-Z\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj",
+        "projectUniqueName": "E:\\Projects\\Done Projects\\bookExchangeNew\\Book-Z\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\API.csproj",
-        "packagesPath": "C:\\Users\\marwa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marwa\\OneDrive\\Documents\\FinalProject\\Book-Z\\api\\obj\\",
+        "projectPath": "E:\\Projects\\Done Projects\\bookExchangeNew\\Book-Z\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+        "outputPath": "E:\\Projects\\Done Projects\\bookExchangeNew\\Book-Z\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\marwa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,6 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -102,7 +109,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }
