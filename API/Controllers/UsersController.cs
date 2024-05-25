@@ -187,7 +187,25 @@ namespace API.Controllers
             }
 
             return Ok(new { ImageUrl = imageUrl });
+        }        
+//=====================================reset-password===========================================
+        //password reset: http://localhost:5050/api/users/reset/password
+        [HttpPost("reset/password")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            try
+            {
+                await _userService.ResetPasswordAsync(dto.Username, dto.NewPassword);
+                return Ok(new { Message = "Password has been reset successfully", NewPassword = dto.NewPassword });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-
     } 
 }

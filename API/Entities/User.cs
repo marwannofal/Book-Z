@@ -9,8 +9,7 @@ namespace API.Entities
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Image { get; set; }
-
-
+        
         // one user has list of this things:
         public List<Rating> Ratings { get; set; }
         public List<Book> Books { get; set; }

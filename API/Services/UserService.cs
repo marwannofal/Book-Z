@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -167,5 +169,19 @@ namespace API.Services
             return true;
         }
 
+        public async Task ResetPasswordAsync(string username, string newPassword)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found");
+            }
+
+            using var hmac = new HMACSHA512();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+            user.PasswordSalt = hmac.Key;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
