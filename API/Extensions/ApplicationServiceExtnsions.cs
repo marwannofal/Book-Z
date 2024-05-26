@@ -32,12 +32,13 @@ namespace API.Extensions
             });
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
+                options.AddPolicy("CorsPolicy",
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:3000") 
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                     });
             });
             return services;

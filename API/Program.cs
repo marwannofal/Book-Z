@@ -13,7 +13,7 @@ var app = builder.Build();
 
 app.UseRouting();
 
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("CorsPolicy");
 
 // Set COEP headers
 app.Use(async (context, next) =>
