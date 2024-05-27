@@ -26,9 +26,27 @@ namespace API.Services
             return books;
         }
 //================================================================================================
-        public async Task<Book> GetBookByIdAsync(int id)
+        public async Task<BookDTO> GetBookByIdAsync(int id)
         {
-            return await _context.Books.FindAsync(id);
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+            if (book == null)
+            {
+                return null;
+            }
+
+            var user = await _context.User
+                .Where(u => u.Books.Any(b => b.Id == id))
+                .Select(u => new { u.Id, u.UserName })
+                .FirstOrDefaultAsync();
+
+            var bookDto = _mapper.Map<BookDTO>(book);
+            if (user != null)
+            {
+                bookDto.UserId = user.Id;
+                bookDto.UserName = user.UserName;
+            }
+
+            return bookDto;
         }
 //================================================================================================
         public async Task<int> AddBookAsync(BookDTO bookDto)

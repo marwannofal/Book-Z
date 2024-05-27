@@ -11,5 +11,7 @@ namespace API.DTOs
         public Availability Availability { get; set; }
         public IFormFile Image { get; set; }
         public string ImageUrl { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
     }
 }

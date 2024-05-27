@@ -97,23 +97,40 @@ namespace API.Services
         {
             if (book == null) throw new ArgumentNullException(nameof(book));
 
-            var user = await _context.User.Include(u => u.Books)
-                                        .FirstOrDefaultAsync(u => u.Id == userId);
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-            if (user == null)
+            try
             {
-                throw new ArgumentException($"User with ID {userId} not found.");
-            }
+                var user = await _context.User.Include(u => u.Books)
+                                                .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user.Books == null)
+                if (user == null)
+                {
+                    throw new ArgumentException($"User with ID {userId} not found.");
+                }
+
+                if (user.Books == null)
+                {
+                    user.Books = new List<Book>();
+                }
+
+                if (string.IsNullOrEmpty(book.Title))
+                {
+                    throw new ArgumentException("Book title is required.");
+                }
+
+                user.Books.Add(book);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return book.Id;
+            }
+            catch (Exception ex)
             {
-                user.Books = new List<Book>();
+                await transaction.RollbackAsync();
+                throw new Exception("An error occurred while adding a book to the user.", ex);
             }
-
-            user.Books.Add(book);
-            await _context.SaveChangesAsync();
-
-            return book.Id;
         }
 //===========================================================================================
         public async Task<UserDto> GetUserWithBooksAndRatingAsync(int userId)

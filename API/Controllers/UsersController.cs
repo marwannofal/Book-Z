@@ -103,6 +103,13 @@ namespace API.Controllers
             }
             try
             {
+
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+
                 var book = _mapper.Map<Book>(bookDto);
 
                 if (bookDto.Image != null)
@@ -110,12 +117,15 @@ namespace API.Controllers
                     var imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
                     book.Image = imageUrl;
                 }
+                
 
                 var bookId = await _userService.AddBookToUserAsync(userId, book);
 
                 var responseDto = _mapper.Map<BookDTO>(book);
                 responseDto.Id = bookId;
                 responseDto.ImageUrl = book.Image;
+                responseDto.UserId = userId;
+                responseDto.UserName = user.Username;
 
                 return CreatedAtRoute("GetBook", new { id = bookId }, responseDto);
             }
