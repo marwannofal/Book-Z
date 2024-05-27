@@ -98,7 +98,6 @@ namespace API.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Password = userDto.Password,
                 Image = user.Image,
                 Books = books,
                 AverageRating = averageRating,
