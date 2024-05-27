@@ -84,7 +84,6 @@ namespace API.Controllers
                 var bookId = await _bookService.AddBookAsync(bookDto);
                 var book = await _bookService.GetBookByIdAsync(bookId);
 
-                // Ensure the book is not null and contains the expected data
                 if (book == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Failed to retrieve the added book");

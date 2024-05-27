@@ -36,7 +36,7 @@ namespace API.Services
 
             var user = await _context.User
                 .Where(u => u.Books.Any(b => b.Id == id))
-                .Select(u => new { u.Id, u.UserName })
+                .Select(u => new { u.Id, u.UserName, u.PhoneNumber })
                 .FirstOrDefaultAsync();
 
             var bookDto = _mapper.Map<BookDTO>(book);
@@ -44,6 +44,7 @@ namespace API.Services
             {
                 bookDto.UserId = user.Id;
                 bookDto.UserName = user.UserName;
+                bookDto.PhoneNumber = user.PhoneNumber;
             }
 
             return bookDto;
