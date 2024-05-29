@@ -25,6 +25,11 @@ namespace API.Extensions
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<ImageService>();
+            services.AddScoped<ValidateCsrfTokenFilter>();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<ValidateCsrfTokenFilter>();
+            });
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new EnumConverter<Condition>());
@@ -40,6 +45,10 @@ namespace API.Extensions
                             .AllowAnyMethod()
                             .AllowCredentials();
                     });
+            });
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
             });
             return services;
         }

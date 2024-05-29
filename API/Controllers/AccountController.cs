@@ -23,7 +23,7 @@ namespace API.Controllers
             _logger = logger;
         }
 //===========================Register==============================================================
-        // POST: https://localhost:5051/api/account/register
+        // POST: http://localhost:5050/api/account/register
         [HttpPost("register")] 
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
@@ -59,7 +59,7 @@ namespace API.Controllers
             };
         }
 //===========================Login==============================================================
-        // POST: https://localhost:5051/api/account/login
+        // POST: http://localhost:5050/api/account/login
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(UserDto userDto) 
         {

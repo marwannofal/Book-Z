@@ -14,7 +14,7 @@ namespace API.Controllers
             _bookService = bookService;
         }
 //=====================================get all books=============================================
-        // Get all Book: https://localhost:5051/api/books
+        // Get all Book: http://localhost:5050/api/books
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
@@ -23,7 +23,7 @@ namespace API.Controllers
             return Ok(books);
         }
 //==============================get book by id====================================================
-        // Get Book by id: https://localhost:5051/api/books/2
+        // Get Book by id: http://localhost:5050/api/books/2
         [HttpGet("{id}", Name = "GetBook")]
         public async Task<IActionResult> GetBook(int id)
         {
@@ -35,7 +35,7 @@ namespace API.Controllers
             return Ok(book);
         }
 //=====================================update book=============================================
-        // PUT: https://localhost:5051/api/books/update/5
+        // PUT: http://localhost:5050/api/books/update/5
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromForm] BookDTO bookDto)
         {
@@ -58,7 +58,7 @@ namespace API.Controllers
             }
         }
 //=====================================Delete book=============================================
-        // DELETE: https://localhost:5051/api/books/delete/5
+        // DELETE: http://localhost:5050/api/books/delete/5
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -70,7 +70,7 @@ namespace API.Controllers
             return Ok(new { Message = "book and related deleted successfully." });
         }
 //=======================================Create Book===================================================
-        //Add: https://localhost:5051/api/books/create
+        //Add: http://localhost:5050/api/books/create
         [HttpPost("create")]
         public async Task<IActionResult> AddBook([FromForm] BookDTO bookDto)
         {

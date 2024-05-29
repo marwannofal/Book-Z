@@ -21,8 +21,8 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/account/register",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/account/register",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -40,10 +40,16 @@
 			"name": "login",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-CSRF-TOKEN",
+						"value": "CfDJ8DskVSIeKVhDik4ik6y2rd-f5l-lKx6foLPIEXx_b1ghqF0shR4HLz-NmKyLx207NOhDLPxACq9_IZ4LyO7YXu9IAfFYq2QjgkyEx5nkfIdlNgddcNg_FAdPY3X3l8H3m2z5cig7gJeN9U66y31PPTc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Username\":\"marwanoo\",\r\n    \"Password\": \"123456789\"\r\n}",
+					"raw": "{\r\n    \"Username\":\"marwanoo\",\r\n    \"Password\": \"Marwan@2002\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,8 +57,8 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/account/login",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/account/login",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -81,8 +87,8 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/ratings/create",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/ratings/create",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -102,14 +108,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/ratings",
-					"protocol": "https",
+					"raw": "{{URL}}/ratings",
 					"host": [
-						"localhost"
+						"{{URL}}"
 					],
-					"port": "5050",
 					"path": [
-						"api",
 						"ratings"
 					]
 				}
@@ -122,8 +125,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/ratings/2010",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/ratings/2010",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -168,8 +171,8 @@
 					]
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/books/create",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/books/create",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -189,8 +192,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/books",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/books",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -209,8 +212,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/books/11019",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/books/16023",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -218,7 +221,7 @@
 					"path": [
 						"api",
 						"books",
-						"11019"
+						"16023"
 					]
 				}
 			},
@@ -230,8 +233,8 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/books/delete/2010",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/books/delete/2010",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -273,12 +276,17 @@
 							"key": "Image",
 							"type": "file",
 							"src": "postman-cloud:///1ef18ca1-8062-4110-9cbe-b59261775950"
+						},
+						{
+							"key": "Availability",
+							"value": "Available",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/books/update/1",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/books/update/2",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -287,7 +295,7 @@
 						"api",
 						"books",
 						"update",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -299,8 +307,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/users",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -319,8 +327,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/users/7011",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/7011",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -340,8 +348,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/users/withall/7011",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/withall/7011",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -362,8 +370,8 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5050/api/users/delete/3005",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/delete/3005",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -385,7 +393,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"UpdatedUsername\",\r\n  \"email\": \"updatedemail@example.com\",\r\n  \"phoneNumber\": \"123-456-7890\",\r\n  \"password\": \"updatedpassword\"\r\n}",
+					"raw": "{\r\n  \"username\": \"UpdatedUsername\",\r\n  \"email\": \"updatedemail@example.com\",\r\n  \"phoneNumber\": \"123-456-7890\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -393,8 +401,8 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/users/update/3006",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/update/3006",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -419,7 +427,7 @@
 					"formdata": [
 						{
 							"key": "title",
-							"value": "book numbe 101",
+							"value": "my new book number 102",
 							"type": "text"
 						},
 						{
@@ -429,19 +437,24 @@
 						},
 						{
 							"key": "Description",
-							"value": "this is book 101",
+							"value": "this is book 102",
 							"type": "text"
 						},
 						{
 							"key": "image",
 							"type": "file",
 							"src": "postman-cloud:///1ef18ca1-8062-4110-9cbe-b59261775950"
+						},
+						{
+							"key": "availability",
+							"value": "Available",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/users/books/7011",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/books/7011",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -471,8 +484,8 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/users/ratings/7011",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/ratings/7011",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -503,8 +516,8 @@
 					]
 				},
 				"url": {
-					"raw": "https://localhost:5050/api/users/uploaduserphoto/7011",
-					"protocol": "https",
+					"raw": "http://localhost:5050/api/users/uploaduserphoto/7011",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -518,6 +531,76 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "reset-password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"marwanoo\",\r\n    \"newPassword\": \"Marwan00Nofal\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/api/users/reset/password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"users",
+						"reset",
+						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "csrf token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"marwanoo\",\r\n    \"newPassword\": \"Marwan00Nofal\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/api/csrf/GetCsrfToken",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"api",
+						"csrf",
+						"GetCsrfToken"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "https://localhost:5050/api"
 		}
 	]
 }

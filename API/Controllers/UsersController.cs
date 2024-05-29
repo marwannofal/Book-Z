@@ -24,7 +24,7 @@ namespace API.Controllers
             _context = context;
         }
 //=====================================get all users=============================================
-        // get all users : https://localhost:5051/api/users
+        // get all users : http://localhost:5050/api/users
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
@@ -33,7 +33,7 @@ namespace API.Controllers
             return Ok(users);
         }
 //==============================get user by id====================================================
-        // get user by id: https://localhost:5051/api/users/3006
+        // get user by id: http://localhost:5050/api/users/3006
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
@@ -45,7 +45,7 @@ namespace API.Controllers
             return Ok(user);
         }
 //=====================================update user=============================================
-        // PUT: https://localhost:5051/api/users/update/5
+        // PUT: http://localhost:5050/api/users/update/5
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
         {
@@ -66,7 +66,7 @@ namespace API.Controllers
             }
         }
 //=====================================Delete user=============================================
-        // DELETE: https://localhost:5051/api/users/delete/5
+        // DELETE: http://localhost:5050/api/users/delete/5
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -78,7 +78,7 @@ namespace API.Controllers
             return Ok(new { Message = "User and related entities deleted successfully." });
         }
 //===============================Get User With Books and Ratings============================================
-        // Get User With Books: https://localhost:5051/api/users/withall/5
+        // Get User With Books: http://localhost:5050/api/users/withall/5
         [HttpGet("withall/{userId}")]
         public async Task<ActionResult<UserDto>> GetUserWithBooksAndRatingAsync(int userId)
         {
@@ -93,7 +93,7 @@ namespace API.Controllers
             }
         }
 //=====================================Add Book To User===========================================
-        //Add Book To User: https://localhost:5051/api/users/books/5
+        //Add Book To User: http://localhost:5050/api/users/books/5
         [HttpPost("books/{userId}")]
         public async Task<ActionResult> AddBookToUserAsync(int userId, [FromForm] BookDTO bookDto)
         {
@@ -139,7 +139,7 @@ namespace API.Controllers
             }
         }
 //=====================================Add Rating To User===========================================
-        //Add Rating To User: https://localhost:5051/api/users/ratings/5
+        //Add Rating To User: http://localhost:5050/api/users/ratings/5
         [HttpPost("ratings/{userId}")]
         public async Task<ActionResult> AddRatingToUserAsync(int userId, [FromBody] RatingDto ratingDto)
         {
@@ -152,7 +152,6 @@ namespace API.Controllers
             {
                 var ratingId = await _userService.AddRatingToUserAsync(userId, ratingDto);
 
-                // Map the created rating back to RatingDto to include the generated ID
                 var createdRating = await _context.Ratings.FindAsync(ratingId);
                 var responseDto = _mapper.Map<RatingDto>(createdRating);
 
@@ -172,7 +171,7 @@ namespace API.Controllers
             }
         }
 //=====================================Add image To User===========================================
-        //Add image To User: https://localhost:5051/api/users/uploaduserphoto/5
+        //Add image To User: http://localhost:5050/api/users/uploaduserphoto/5
         [HttpPost("uploaduserphoto/{id}")]
         public async Task<IActionResult> UploadPhoto(int id, [FromForm] ImageUploadDto imageUploadDto)
         {

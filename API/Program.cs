@@ -1,7 +1,5 @@
 using API.Extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Antiforgery;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +23,20 @@ app.Use(async (context, next) =>
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(); // Enable serving static files from wwwroot
+app.UseStaticFiles(); 
+
+app.Use(async (context, next) =>
+{
+    var antiforgery = context.RequestServices.GetRequiredService<IAntiforgery>();
+    var tokens = antiforgery.GetAndStoreTokens(context);
+    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions
+    {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Strict
+    });
+    await next();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
