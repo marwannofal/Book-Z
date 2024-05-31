@@ -16,6 +16,8 @@ namespace API.Controllers
         public IActionResult GetCsrfToken()
         {
             var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+            HttpContext.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+                new CookieOptions { HttpOnly = false });
             return new JsonResult(new { RequestToken = tokens.RequestToken });
         }   
     }
