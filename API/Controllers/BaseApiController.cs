@@ -5,7 +5,7 @@ namespace API.Controllers
 {
     [ApiController]
     [EnableCors("CorsPolicy")]
-    [ServiceFilter(typeof(ValidateCsrfTokenFilter))]
+    [AutoValidateAntiforgeryToken]
     [Route("api/[controller]")] 
     public class BaseApiController : ControllerBase
     {

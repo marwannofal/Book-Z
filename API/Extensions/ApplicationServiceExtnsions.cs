@@ -35,15 +35,11 @@ namespace API.Extensions
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<ImageService>();
-            services.AddScoped<ValidateCsrfTokenFilter>();
             services.AddAntiforgery(options =>
             {
                 options.HeaderName = "X-CSRF-TOKEN";
             });
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add<ValidateCsrfTokenFilter>();
-            });
+            services.AddControllersWithViews(); 
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new EnumConverter<Condition>());
