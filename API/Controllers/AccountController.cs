@@ -66,8 +66,8 @@ namespace API.Controllers
             var user = await _context.User
                 .Include(u => u.Books)
                 .Include(u => u.Ratings)
-                .SingleOrDefaultAsync(
-                x => x.UserName == userDto.Username);
+                .AsSplitQuery() 
+                .SingleOrDefaultAsync(x => x.UserName == userDto.Username);
     
             if (user == null) return Unauthorized("invalid Username");
         

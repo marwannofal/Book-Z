@@ -64,6 +64,7 @@ namespace API.Services
             var user = await _context.User
                 .Include(u => u.Books)
                 .Include(u => u.Ratings)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(u => u.Id == id);
                 
             if (user == null)
@@ -139,6 +140,7 @@ namespace API.Services
             var user = await _context.User
                 .Include(u => u.Books)
                 .Include(u => u.Ratings)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(u => u.Id == userId);
             
             if (user == null) throw new KeyNotFoundException("User not found");

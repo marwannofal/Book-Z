@@ -26,8 +26,9 @@ public class ValidateCsrfTokenFilter : IAsyncAuthorizationFilter
         {
             await _antiforgery.ValidateRequestAsync(context.HttpContext);
         }
-        catch (AntiforgeryValidationException)
+        catch (AntiforgeryValidationException ex)
         {
+            context.HttpContext.Response.Headers.Add("X-CSRF-Error", ex.Message);
             context.Result = new ForbidResult();
         }
     }
