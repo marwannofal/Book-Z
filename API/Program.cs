@@ -33,7 +33,7 @@ app.Use(async (context, next) =>
     context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions
     {
         HttpOnly = false,
-        Secure = true,
+        Secure = false,
         SameSite = SameSiteMode.Strict
     });
     await next();
