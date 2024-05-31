@@ -9,6 +9,10 @@ builder.Services.AddIdentityServiceExtensions(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+
+app.UseStaticFiles(); 
+
 app.UseRouting();
 
 app.UseCors("CorsPolicy");
@@ -21,9 +25,6 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseHttpsRedirection();
-
-app.UseStaticFiles(); 
 
 app.Use(async (context, next) =>
 {
@@ -31,7 +32,7 @@ app.Use(async (context, next) =>
     var tokens = antiforgery.GetAndStoreTokens(context);
     context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions
     {
-        HttpOnly = true,
+        HttpOnly = false,
         Secure = true,
         SameSite = SameSiteMode.Strict
     });

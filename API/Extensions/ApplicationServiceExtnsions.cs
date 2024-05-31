@@ -15,25 +15,7 @@ namespace API.Extensions
             //connect the database with data entities and data in sql <3:
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Book-Z;Integrated Security=True");
-            });
-            services.AddCors();
-            services.AddLogging();
-            services.AddAutoMapper(typeof(MappingProfile).Assembly);
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IBookService, BookService>();
-            services.AddScoped<IRatingService, RatingService>();
-            services.AddScoped<ImageService>();
-            services.AddScoped<ValidateCsrfTokenFilter>();
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add<ValidateCsrfTokenFilter>();
-            });
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Condition>());
-                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Availability>());
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
             services.AddCors(options =>
             {
@@ -46,10 +28,28 @@ namespace API.Extensions
                             .AllowCredentials();
                     });
             });
+            services.AddLogging();
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<ImageService>();
+            services.AddScoped<ValidateCsrfTokenFilter>();
             services.AddAntiforgery(options =>
             {
                 options.HeaderName = "X-CSRF-TOKEN";
             });
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<ValidateCsrfTokenFilter>();
+            });
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Condition>());
+                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Availability>());
+            });
+            
             return services;
         }
     }
