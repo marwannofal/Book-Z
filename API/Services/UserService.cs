@@ -30,8 +30,21 @@ namespace API.Services
 
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            return _mapper.Map<UserDto>(user);
+            var user = await _context.User.Include(u => u.Ratings)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            double averageRating = user.Ratings.Any() ? user.Ratings.Average(r => r.RatingValue) : 0.0;
+
+            return new UserDto
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Image = user.Image,
+                AverageRating = averageRating,
+            };
         }
 //===========================================================================================
         public async Task<bool> UpdateUserAsync(int id, UserDto userDto)
@@ -142,7 +155,7 @@ namespace API.Services
                 .Include(u => u.Ratings)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(u => u.Id == userId);
-            
+                
             if (user == null) throw new KeyNotFoundException("User not found");
 
             return _mapper.Map<UserDto>(user);

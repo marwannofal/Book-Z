@@ -8,6 +8,5 @@ namespace API.DTOs
         [Required]
         [Range(0.0 , 5.0)]
         public float RatingValue { get; set;}
-
     }
 }
