@@ -25,9 +25,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
-  <Target Name="PostPublish" AfterTargets="Publish">
-      <Exec Command="npm install --prefix ../client" />
-      <Exec Command="npm run build --prefix ../client" />
-      <Exec Command="xcopy /E /I /Y ..\client\build wwwroot\" />
-    </Target>
 </Project>

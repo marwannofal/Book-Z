@@ -44,7 +44,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Fallback to index.html to serve the React app
-app.MapFallbackToFile("index.js");
-
 app.Run();
