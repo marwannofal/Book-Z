@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create the Axios instance
 const api = axios.create({
-  baseURL: "http://localhost:5050/api",
+  baseURL: "https://book-z-31df24479a7a.herokuapp.com//api",
   headers: {
     "Content-Type": "application/json",
   },
