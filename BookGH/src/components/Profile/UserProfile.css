@@ -1,0 +1,66 @@
+/* profile.css */
+
+.profile-v {
+  max-width: 800px;
+  margin: 70px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-v .profile-info {
+  display: flex;
+}
+
+.profile-v .profile-photo img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-v .info {
+  margin-left: 20px;
+}
+
+.profile-v .info h2 {
+  margin: 0 0 10px;
+}
+
+.profile-v .info p {
+  margin: 5px 0;
+}
+
+.profile-v .buttons button {
+  background-color: #3674a6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.profile-v .buttons button:hover {
+  background-color: #285a8e;
+}
+
+/* Additional styles for the modal */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ReactModal__Content {
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  margin-right: -50% !important;
+  transform: translate(-50%, -50%) !important;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

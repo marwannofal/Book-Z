@@ -1,0 +1,140 @@
+.post-page {
+  max-width: 800px;
+  margin: 70px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-page .btn-whatsApp {
+  background-color: #3674a6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.postHead .postInfo {
+  font-size: 14px;
+}
+.postHead .postInfo :first-child {
+  font-size: 18px;
+  padding-bottom: 2px;
+}
+.postHead {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.post-page h1 {
+  font-size: 24px;
+  margin: 10px 0 20px;
+  color: #333;
+}
+
+/* .image-container img {
+  width: 100%;
+  height: auto;
+  max-height: 50px;
+} */
+
+.image-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.image-container.full-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9990;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: unset;
+}
+
+.image-container.full-view img {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.image-container.full-view .slide-button {
+  display: none;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  display: block;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+.image-container img.hidden {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.slide-button:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.slide-button.previous {
+  left: 10px;
+}
+
+.slide-button.next {
+  right: 10px;
+}
+
+.back-button {
+  background-color: #f7f7f7;
+  color: #333333;
+  font-size: 18px;
+  margin-bottom: 5px;
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #333333;
+}
+
+.user-link {
+  text-decoration: none;
+  color: inherit;
+}
+.user-link:hover {
+  text-decoration: underline;
+}

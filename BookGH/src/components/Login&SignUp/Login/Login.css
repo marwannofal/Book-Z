@@ -1,0 +1,89 @@
+.container-l {
+  max-width: 400px;
+  margin: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 55px 20px 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  color: #dcdcdc;
+  border-radius: 40px;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  position: relative;
+}
+.background-l {
+  background-position: center center;
+}
+
+.container-l h2::after {
+  content: "";
+  position: absolute;
+  top: -16%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 102px;
+  height: 103px;
+  background-image: url(../../../assets/default.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 100px;
+}
+.container-l.show {
+  transform: translateX(0);
+}
+.container-l h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.container-l p {
+  margin-top: 5px;
+  text-align: center;
+}
+.container-l p .link {
+  color: #3674a6;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.container-l .form-group {
+  margin-bottom: 20px;
+}
+
+.container-l .form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  border-radius: 20px;
+  margin: 5px 0px;
+}
+
+.container-l .btn-primary {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #3674a6;
+  border: none;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.container-l .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.container-l label {
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}

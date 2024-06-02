@@ -1,0 +1,25 @@
+.nav {
+  margin: 0 auto;
+}
+@media (max-width: 699px) {
+  .nav {
+    display: none;
+  }
+}
+.navList {
+  display: flex;
+}
+.navList li {
+  color: #64748b;
+  padding: 0px 7px;
+  list-style: none;
+  line-height: 64px;
+  font-size: 18px;
+}
+.color li {
+  color: white;
+}
+.navList li:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
+}

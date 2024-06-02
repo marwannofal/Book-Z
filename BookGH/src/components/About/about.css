@@ -1,0 +1,33 @@
+.container-a {
+  max-width: 800px;
+  margin: 70px auto 0;
+  padding: 20px;
+}
+
+.container-a .heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.container-a .description {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.container-a .imageContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.container-a .image {
+  width: 45%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.container-a .image:hover {
+  transform: scale(1.05);
+}
