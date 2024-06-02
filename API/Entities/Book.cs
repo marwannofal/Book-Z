@@ -6,6 +6,8 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        // public string Tistle { get; set; }
+        
         public Condition Condition { get; set; }
         public string Description { get; set; }
         public Availability Availability { get; set; }
