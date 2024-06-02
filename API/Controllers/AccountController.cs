@@ -91,6 +91,8 @@ namespace API.Controllers
             }).ToList();
 
             double averageRating = user.Ratings.Any() ? user.Ratings.Average(r => r.RatingValue) : 0.0;
+            int decimalPlaces = 2 ;
+            double roundedNumber = Math.Round(averageRating, decimalPlaces);
             
             return new UserDto
             {
@@ -100,7 +102,7 @@ namespace API.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Image = user.Image,
                 Books = books,
-                AverageRating = averageRating,
+                AverageRating = roundedNumber,
                 Token = _tokenService.CreateToken(user)
             }; 
         }

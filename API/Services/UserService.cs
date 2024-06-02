@@ -35,6 +35,8 @@ namespace API.Services
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             double averageRating = user.Ratings.Any() ? user.Ratings.Average(r => r.RatingValue) : 0.0;
+            int decimalPlaces = 2 ;
+            double roundedNumber = Math.Round(averageRating, decimalPlaces);
 
             return new UserDto
             {
@@ -43,7 +45,7 @@ namespace API.Services
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Image = user.Image,
-                AverageRating = averageRating,
+                AverageRating = roundedNumber,
             };
         }
 //===========================================================================================
