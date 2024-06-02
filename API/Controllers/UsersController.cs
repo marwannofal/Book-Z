@@ -205,7 +205,7 @@ namespace API.Controllers
             try
             {
                 await _userService.ResetPasswordAsync(dto.Username, dto.NewPassword);
-                return Ok(new { Message = "Password has been reset successfully", NewPassword = dto.NewPassword });
+                return Ok(new { Message = "Password has been reset successfully"});
             }
             catch (KeyNotFoundException ex)
             {
