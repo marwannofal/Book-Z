@@ -110,7 +110,7 @@ const NewPost = ({ onClose, onAddPost }) => {
             required
           >
             <option value="New">New</option>
-            <option value="Like New">Like New</option>
+            <option value="Like_New">Like New</option>
             <option value="Used">Used</option>
             <option value="Damaged">Damaged</option>
           </select>
