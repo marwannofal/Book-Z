@@ -97,7 +97,6 @@ namespace API.Services
                 _context.Ratings.RemoveRange(user.Ratings);
             }
 
-            // Remove the user
             _context.User.Remove(user);
             
             await _context.SaveChangesAsync();
@@ -158,7 +157,7 @@ namespace API.Services
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(u => u.Id == userId);
                 
-            if (user == null) throw new KeyNotFoundException("User not found");
+            if (user == null) throw new ArgumentException($"User with ID {userId} not found.");
 
             return _mapper.Map<UserDto>(user);
         }
@@ -169,7 +168,7 @@ namespace API.Services
                                         .FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
             {
-                throw new KeyNotFoundException("User not found");
+                throw new ArgumentException($"User with ID {userId} not found.");
             }
 
             var rating = _mapper.Map<Rating>(ratingDto);
@@ -184,7 +183,7 @@ namespace API.Services
             var user = await _context.User.FindAsync(id);
             if (user == null)
             {
-                return false;
+                throw new ArgumentException($"User with ID {id} not found.");
             }
 
             user.Image = imageUrl;
