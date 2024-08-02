@@ -75,6 +75,7 @@ namespace API.Services
                 Condition = bookDto.Condition,
                 Description = bookDto.Description,
                 Availability = bookDto.Availability,
+                Category = bookDto.Category,
                 Image = imageUrl
             };
 
@@ -105,6 +106,7 @@ namespace API.Services
             book.Condition = bookDto.Condition;
             book.Description = bookDto.Description;
             book.Availability = bookDto.Availability;
+            book.Category = bookDto.Category;
 
             if (bookDto.Image != null)
             {

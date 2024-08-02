@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using API.Data;
 using API.Interfaces;
 using API.Services;
@@ -35,6 +34,7 @@ namespace API.Extensions
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<ImageService>();
+            services.AddScoped<IExchangeService, ExchangeService>();
             services.AddAntiforgery(options =>
             {
                 options.HeaderName = "X-CSRF-TOKEN";
@@ -44,6 +44,7 @@ namespace API.Extensions
             {
                 options.JsonSerializerOptions.Converters.Add(new EnumConverter<Condition>());
                 options.JsonSerializerOptions.Converters.Add(new EnumConverter<Availability>());
+                options.JsonSerializerOptions.Converters.Add(new EnumConverter<Category>());
             });
             
             return services;

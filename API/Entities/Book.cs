@@ -9,6 +9,8 @@ namespace API.Entities
         public Condition Condition { get; set; }
         public string Description { get; set; }
         public Availability Availability { get; set; }
+        public Category Category { get; set; }
         public string Image { get; set; }
+
     }
 }

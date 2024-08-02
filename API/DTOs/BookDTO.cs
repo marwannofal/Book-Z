@@ -4,11 +4,12 @@ namespace API.DTOs
 {
     public class BookDTO
     {
-         public int Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public Condition Condition { get; set; }
         public string Description { get; set; }
         public Availability Availability { get; set; }
+        public Category Category { get; set; }
         public IFormFile Image { get; set; }
         public string ImageUrl { get; set; }
         public int UserId { get; set; }

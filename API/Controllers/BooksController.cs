@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
@@ -9,9 +10,13 @@ namespace API.Controllers
     public class BooksController : BaseApiController
     {
         private readonly IBookService _bookService;
-        public BooksController(IBookService bookService)
+        private readonly IUserService _userService;
+        private readonly IExchangeService _exchangeService;
+        public BooksController(IBookService bookService, IUserService userService, IExchangeService exchangeService)
         {
             _bookService = bookService;
+            _userService = userService;
+            _exchangeService = exchangeService;
         }
 //=====================================get all books=============================================
         // Get all Book: http://localhost:5050/api/books
@@ -101,6 +106,43 @@ namespace API.Controllers
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to add book");
             }
+        }
+//=======================================Exchange Book===================================================
+        //Add: http://localhost:5050/api/books/exchange/5
+        [Authorize]
+        [HttpPost("exchange/{bookId}")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> InitiateExchange(int bookId)
+        {
+            var currentUserId  = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+             
+            if (!await _exchangeService.CanUserExchangeAsync(currentUserId))
+            {
+                return BadRequest("You have reached the maximum of 4 exchanges in the last 2 months.");
+            }
+
+            var book = await _bookService.GetBookByIdAsync(bookId);
+            if (book == null)
+            {
+                return NotFound("Book not found.");
+            }
+
+            var bookOwner  = await _userService.GetUserByIdAsync(book.UserId);
+            if (bookOwner == null || string.IsNullOrEmpty(bookOwner.PhoneNumber))
+            {
+                return BadRequest("User's phone number is not available.");
+            }
+
+            var ownerPhoneNumber  = bookOwner.PhoneNumber; 
+            var internationalPhoneNumber = $"+962{ownerPhoneNumber.Substring(1)}";
+
+            await _exchangeService.LogExchangeAsync(currentUserId, bookId);
+
+            var message = $"Hello, I'm interested in exchanging the book '{book.Title}'.";
+            var encodedMessage = Uri.EscapeDataString(message);
+            var whatsappUrl = $"https://wa.me/{internationalPhoneNumber}?text={encodedMessage}";
+            
+            return Ok(new { RedirectUrl = whatsappUrl });
         }
     }
 }

@@ -87,6 +87,7 @@ namespace API.Controllers
                 Condition = b.Condition,
                 Description = b.Description,
                 Availability = b.Availability,
+                Category = b.Category,
                 ImageUrl = b.Image
             }).ToList();
 
