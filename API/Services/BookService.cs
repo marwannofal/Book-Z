@@ -154,34 +154,57 @@ namespace API.Services
 //================================================================================================
         public async Task<bool> DeleteBookAsync(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books
+                .Include(b => b.Images)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(b => b.Id == id);
+
             if (book == null)
             {
                 return false;
             }
+
+            // Remove related images first
+            _context.Images.RemoveRange(book.Images);
+
             _context.Books.Remove(book);
+
             await _context.SaveChangesAsync();
             return true;
         }
 //================================================================================================
         public async Task<IEnumerable<BookDTO>> SearchBooksAsync(string searchTerm)
         {
-            var query = _context.Books.AsQueryable();
-
-            if (!string.IsNullOrEmpty(searchTerm))
+            var query = _context.Books
+                .Include(b => b.Images)
+                .AsSplitQuery()
+                .AsQueryable();
+            try
             {
-                searchTerm = searchTerm.ToLower();
-                Category? category = Enum.GetValues(typeof(Category))
-                                            .Cast<Category>()
-                                            .FirstOrDefault(c => c.ToString().ToLower() == searchTerm);
-                query = query.Where(b =>
-                    b.Title.ToLower().Equals(searchTerm) ||
-                    (category.HasValue && b.Category == category.Value )
-                );
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    searchTerm = searchTerm.ToLower();
+                    if (Enum.TryParse(typeof(Category), searchTerm, true, out var category))
+                    {
+                        query = query.Where(b => b.Category == (Category)category);
+                    }
+                    else if(Enum.TryParse(typeof(Condition), searchTerm, true, out var condition))
+                    {
+                        query = query.Where(b => b.Condition == (Condition)condition);
+                    }
+                    else
+                    {
+                        query = query.Where(b => b.Title.ToLower().Contains(searchTerm));
+                    }
+                }
+                var books = await query.ToListAsync();
+                return _mapper.Map<IEnumerable<BookDTO>>(books);
             }
-
-            var books = await query.ToListAsync();
-            return _mapper.Map<IEnumerable<BookDTO>>(books);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Searching failed: {ex.Message}");
+                throw;
+            }
         }
 
     }
