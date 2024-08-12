@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240525145650_AvailabilityMigrations")]
-    partial class AvailabilityMigrations
+    [Migration("20240812065612_UpdateBookWithImages")]
+    partial class UpdateBookWithImages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,13 +36,13 @@ namespace API.Data.Migrations
                     b.Property<int>("Availability")
                         .HasColumnType("int");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
                     b.Property<int>("Condition")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -56,6 +56,53 @@ namespace API.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("API.Entities.BookExchange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExchangeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BookExchanges");
+                });
+
+            modelBuilder.Entity("API.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("API.Entities.Rating", b =>
@@ -117,11 +164,42 @@ namespace API.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("API.Entities.BookExchange", b =>
+                {
+                    b.HasOne("API.Entities.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Entities.Image", b =>
+                {
+                    b.HasOne("API.Entities.Book", null)
+                        .WithMany("Images")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("API.Entities.Rating", b =>
                 {
                     b.HasOne("API.Entities.User", null)
                         .WithMany("Ratings")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("API.Entities.Book", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>

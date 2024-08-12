@@ -112,10 +112,13 @@ namespace API.Controllers
 
                 var book = _mapper.Map<Book>(bookDto);
 
-                if (bookDto.Image != null)
+                if (bookDto.Images != null && bookDto.Images.Count > 0)
                 {
-                    var imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
-                    book.Image = imageUrl;
+                    var imageUrls = await _imageService.UploadImagesAsync(bookDto.Images.ToList());
+                    foreach (var url in imageUrls)
+                    {
+                        book.Images.Add(new Image { Url = url });
+                    }
                 }
                 
 
@@ -123,7 +126,7 @@ namespace API.Controllers
 
                 var responseDto = _mapper.Map<BookDTO>(book);
                 responseDto.Id = bookId;
-                responseDto.ImageUrl = book.Image;
+                responseDto.ImageUrls =  book.Images.Select(i => i.Url).ToList();
                 responseDto.UserId = userId;
                 responseDto.UserName = user.Username;
 
@@ -186,6 +189,7 @@ namespace API.Controllers
                 return NotFound("User not found.");
             }
 
+            // Upload the single image
             var imageUrl = await _imageService.UploadImageAsync(imageUploadDto.Image);
             user.Image = imageUrl;
 

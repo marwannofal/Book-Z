@@ -13,5 +13,6 @@ namespace API.Data
         public DbSet<Book> Books { get; set;}
         public DbSet<Rating>  Ratings{ get; set; }
         public DbSet<BookExchange> BookExchanges { get; set; }
+        public DbSet<Image> Images{ get; set; }
     }
 }

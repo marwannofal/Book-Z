@@ -6,11 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedExchangeMechanisem : Migration
+    public partial class FirstOne : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "Availability",
+                table: "Books",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "Category",
+                table: "Books",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.CreateTable(
                 name: "BookExchanges",
                 columns: table => new
@@ -54,6 +68,14 @@ namespace API.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BookExchanges");
+
+            migrationBuilder.DropColumn(
+                name: "Availability",
+                table: "Books");
+
+            migrationBuilder.DropColumn(
+                name: "Category",
+                table: "Books");
         }
     }
 }

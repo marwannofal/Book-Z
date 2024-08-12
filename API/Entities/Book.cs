@@ -10,7 +10,8 @@ namespace API.Entities
         public string Description { get; set; }
         public Availability Availability { get; set; }
         public Category Category { get; set; }
-        public string Image { get; set; }
+
+        public List<Image> Images { get; set; } = new List<Image>();
 
     }
 }

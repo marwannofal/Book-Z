@@ -108,7 +108,7 @@ namespace API.Controllers
             }
         }
 //=======================================Exchange Book===================================================
-        //Add: http://localhost:5050/api/books/exchange/5
+        //Post: http://localhost:5050/api/books/exchange/5
         [Authorize]
         [HttpPost("exchange/{bookId}")]
         [IgnoreAntiforgeryToken]
@@ -143,6 +143,14 @@ namespace API.Controllers
             var whatsappUrl = $"https://wa.me/{internationalPhoneNumber}?text={encodedMessage}";
             
             return Ok(new { RedirectUrl = whatsappUrl });
+        }
+//=======================================Search Book===================================================
+        //Get: http://localhost:5050/api/books/search
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<BookDTO>>> SearchBooks([FromQuery] string searchTerm)
+        {
+            var books = await _bookService.SearchBooksAsync(searchTerm);
+            return Ok(books);
         }
     }
 }

@@ -88,7 +88,7 @@ namespace API.Controllers
                 Description = b.Description,
                 Availability = b.Availability,
                 Category = b.Category,
-                ImageUrl = b.Image
+                ImageUrls = b.Images.Select(i => i.Url).ToList()
             }).ToList();
 
             double averageRating = user.Ratings.Any() ? user.Ratings.Average(r => r.RatingValue) : 0.0;

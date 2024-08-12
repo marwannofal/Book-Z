@@ -42,9 +42,6 @@ namespace API.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -82,6 +79,27 @@ namespace API.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("BookExchanges");
+                });
+
+            modelBuilder.Entity("API.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("API.Entities.Rating", b =>
@@ -162,11 +180,23 @@ namespace API.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Entities.Image", b =>
+                {
+                    b.HasOne("API.Entities.Book", null)
+                        .WithMany("Images")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("API.Entities.Rating", b =>
                 {
                     b.HasOne("API.Entities.User", null)
                         .WithMany("Ratings")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("API.Entities.Book", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>

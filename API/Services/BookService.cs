@@ -1,6 +1,7 @@
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Entities.Enum;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +23,19 @@ namespace API.Services
 //================================================================================================
         public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
-            var books = await _context.Books.ToListAsync();
+            var books = await _context.Books
+            .Include(b => b.Images)
+            .AsSplitQuery()
+            .ToListAsync();
             return books;
         }
 //================================================================================================
         public async Task<BookDTO> GetBookByIdAsync(int id)
         {
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _context.Books
+            .Include(b => b.Images)
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return null;
@@ -47,37 +54,36 @@ namespace API.Services
                 bookDto.PhoneNumber = user.PhoneNumber;
             }
 
+            if (book.Images != null)
+            {
+                bookDto.ImageUrls = book.Images.Select(i => i.Url).ToList();
+            }
+
             return bookDto;
         }
 //================================================================================================
         public async Task<int> AddBookAsync(BookDTO bookDto)
         {
-            string imageUrl = null;
-            if (bookDto.Image != null)
-            {
-                try
-                {
-                    Console.WriteLine("Uploading image...");
-                    imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
-                    Console.WriteLine($"Image uploaded: {imageUrl}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Image upload failed: {ex.Message}");
-                    throw;
-                }
-            }
+            Console.WriteLine("Starting AddBookAsync");
 
             var book = new Book
             {
-                Id = bookDto.Id,
                 Title = bookDto.Title,
                 Condition = bookDto.Condition,
                 Description = bookDto.Description,
                 Availability = bookDto.Availability,
                 Category = bookDto.Category,
-                Image = imageUrl
             };
+
+            if (bookDto.Images != null && bookDto.Images.Any())
+            {
+                Console.WriteLine("Adding images to the book");
+                var imageUrls = await _imageService.UploadImagesAsync(bookDto.Images);
+                foreach (var url in imageUrls)
+                {
+                    book.Images.Add(new Image { Url = url });
+                }
+            }
 
             try
             {
@@ -93,10 +99,14 @@ namespace API.Services
 
             return book.Id;
         }
+
 //================================================================================================
         public async Task<bool> UpdateBookAsync(int id, BookDTO bookDto)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books
+                .Include(b => b.Images)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return false; 
@@ -108,17 +118,23 @@ namespace API.Services
             book.Availability = bookDto.Availability;
             book.Category = bookDto.Category;
 
-            if (bookDto.Image != null)
+            if (bookDto.Images != null && bookDto.Images.Any())
             {
-                try
+                _context.Images.RemoveRange(book.Images);
+                book.Images.Clear();
+
+                foreach (var image in bookDto.Images)
                 {
-                    var imageUrl = await _imageService.UploadImageAsync(bookDto.Image);
-                    book.Image = imageUrl;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Image upload failed: {ex.Message}");
-                    throw;
+                    try
+                    {
+                        var imageUrl = await _imageService.UploadImageAsync(image);
+                        book.Images.Add(new Image { Url = imageUrl });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Image upload failed: {ex.Message}");
+                        throw;
+                    }
                 }
             }
 
@@ -147,10 +163,26 @@ namespace API.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
-        private bool BookExists(int id)
+//================================================================================================
+        public async Task<IEnumerable<BookDTO>> SearchBooksAsync(string searchTerm)
         {
-            return _context.Books.Any(e => e.Id == id);
+            var query = _context.Books.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                Category? category = Enum.GetValues(typeof(Category))
+                                            .Cast<Category>()
+                                            .FirstOrDefault(c => c.ToString().ToLower() == searchTerm);
+                query = query.Where(b =>
+                    b.Title.ToLower().Equals(searchTerm) ||
+                    (category.HasValue && b.Category == category.Value )
+                );
+            }
+
+            var books = await query.ToListAsync();
+            return _mapper.Map<IEnumerable<BookDTO>>(books);
         }
+
     }
 }

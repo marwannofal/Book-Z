@@ -10,5 +10,6 @@ namespace API.Interfaces
         Task<int> AddBookAsync(BookDTO book);
         Task<bool> UpdateBookAsync(int id,BookDTO book);
         Task<bool> DeleteBookAsync(int id);
+        Task<IEnumerable<BookDTO>> SearchBooksAsync(string searchTerm);
     }
 }
